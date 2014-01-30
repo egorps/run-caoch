@@ -1,0 +1,12 @@
+{
+  "name": "run-coach",
+  "description": "An app for creating running schedules for coached runners. This is a coaching tool",
+  "repository": "https://github.com/egorps/run-coach",
+  "devDependencies": {
+    "phantomjs" : "~1.9",
+    "karma" : "~0.10",
+    "karma-junit-reporter" : "~0.1",
+    "karma-jasmine" : "~0.1",
+    "karma-ng-scenario" : "~0.1"
+  }
+}

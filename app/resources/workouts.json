@@ -1,0 +1,27 @@
+{
+    "workouts": [
+        {
+            "name": "3 x 1600",
+            "steps": [
+                {
+                    "actions": [
+                        {"warmup": "1M"}
+                    ]
+                },
+                {
+                    "actions": [
+                        {"run": "1600m"},
+                        {"recover": "400m"}
+                    ],
+                    "reps": 3
+                },
+                {
+                    "actions": [
+                        {"cooldown": "1M"}
+                    ]
+                }
+
+            ]
+        }
+    ]
+}

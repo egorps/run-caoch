@@ -777,8 +777,8 @@ function isLeafNode (node) {
  <button ng-click="reset()">RESET</button>
  <button ng-click="update(user)">SAVE</button>
  </form>
- <pre>form = {{user | json}}</pre>
- <pre>master = {{master | json}}</pre>
+ <pre>form = {{user | resources}}</pre>
+ <pre>master = {{master | resources}}</pre>
  </div>
 
  <script>
@@ -1207,7 +1207,7 @@ function encodeUriQuery(val, pctEncodeSpaces) {
  * `ngApp` is the easiest, and most common, way to bootstrap an application.
  *
  <example module="ngAppDemo">
-   <file name="index.html">
+   <file name="index-old.html">
    <div ng-controller="ngAppDemoController">
      I can add: {{a}} + {{b}} =  {{ a+b }}
    </file>
@@ -3750,7 +3750,7 @@ function createInjector(modulesToLoad) {
  * 
  * @example
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
        <div id="scrollArea" ng-controller="ScrollCtrl">
          <a ng-click="gotoBottom()">Go to bottom</a>
          <a id="bottom"></a> You're at the bottom!
@@ -6925,13 +6925,13 @@ function $HttpProvider() {
   var JSON_START = /^\s*(\[|\{[^\{])/,
       JSON_END = /[\}\]]\s*$/,
       PROTECTION_PREFIX = /^\)\]\}',?\n/,
-      CONTENT_TYPE_APPLICATION_JSON = {'Content-Type': 'application/json;charset=utf-8'};
+      CONTENT_TYPE_APPLICATION_JSON = {'Content-Type': 'application/resources;charset=utf-8'};
 
   var defaults = this.defaults = {
     // transform incoming response data
     transformResponse: [function(data) {
       if (isString(data)) {
-        // strip json vulnerability protection prefix
+        // strip resources vulnerability protection prefix
         data = data.replace(PROTECTION_PREFIX, '');
         if (JSON_START.test(data) && JSON_END.test(data))
           data = fromJson(data);
@@ -6947,7 +6947,7 @@ function $HttpProvider() {
     // default headers
     headers: {
       common: {
-        'Accept': 'application/json, text/plain, */*'
+        'Accept': 'application/resources, text/plain, */*'
       },
       post:   copy(CONTENT_TYPE_APPLICATION_JSON),
       put:    copy(CONTENT_TYPE_APPLICATION_JSON),
@@ -7100,11 +7100,11 @@ function $HttpProvider() {
      * object, which currently contains this default configuration:
      *
      * - `$httpProvider.defaults.headers.common` (headers that are common for all requests):
-     *   - `Accept: application/json, text/plain, * / *`
+     *   - `Accept: application/resources, text/plain, * / *`
      * - `$httpProvider.defaults.headers.post`: (header defaults for POST requests)
-     *   - `Content-Type: application/json`
+     *   - `Content-Type: application/resources`
      * - `$httpProvider.defaults.headers.put` (header defaults for PUT requests)
-     *   - `Content-Type: application/json`
+     *   - `Content-Type: application/resources`
      *
      * To add or overwrite these defaults, simply add or remove a property from these configuration
      * objects. To add headers for an HTTP method other than POST or PUT, simply add a new object
@@ -7310,7 +7310,7 @@ function $HttpProvider() {
      *
      * When designing web applications, consider security threats from:
      *
-     * - {@link http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx
+     * - {@link http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-resources-vulnerability.aspx
      *   JSON vulnerability}
      * - {@link http://en.wikipedia.org/wiki/Cross-site_request_forgery XSRF}
      *
@@ -7320,7 +7320,7 @@ function $HttpProvider() {
      *
      * ## JSON Vulnerability Protection
      *
-     * A {@link http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx
+     * A {@link http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-resources-vulnerability.aspx
      * JSON vulnerability} allows third party website to turn your JSON resource URL into
      * {@link http://en.wikipedia.org/wiki/JSONP JSONP} request under some conditions. To
      * counter this your server can prefix all JSON requests with following string `")]}',\n"`.
@@ -7418,7 +7418,7 @@ function $HttpProvider() {
      *
      * @example
 <example>
-<file name="index.html">
+<file name="index-old.html">
   <div ng-controller="FetchCtrl">
     <select ng-model="method">
       <option>GET</option>
@@ -9265,7 +9265,7 @@ function $LocationProvider(){
          $scope.message = 'Hello World!';
        }
      </file>
-     <file name="index.html">
+     <file name="index-old.html">
        <div ng-controller="LogCtrl">
          <p>Reload this page with open console, enter text and hit the log button...</p>
          Message:
@@ -9811,7 +9811,7 @@ Parser.prototype = {
   parse: function (text, json) {
     this.text = text;
 
-    //TODO(i): strip all the obsolte json stuff from this file
+    //TODO(i): strip all the obsolte resources stuff from this file
     this.json = json;
 
     this.tokens = this.lexer.lex(text);
@@ -9825,7 +9825,7 @@ Parser.prototype = {
       this.fieldAccess =
       this.objectIndex =
       this.filterChain = function() {
-        this.throwError('is not valid json', {text: text, index: 0});
+        this.throwError('is not valid resources', {text: text, index: 0});
       };
     }
 
@@ -9908,7 +9908,7 @@ Parser.prototype = {
     var token = this.peek(e1, e2, e3, e4);
     if (token) {
       if (this.json && !token.json) {
-        this.throwError('is not valid json', token);
+        this.throwError('is not valid resources', token);
       }
       this.tokens.shift();
       return token;
@@ -10189,7 +10189,7 @@ Parser.prototype = {
     };
   },
 
-  // This is used with json array declaration
+  // This is used with resources array declaration
   arrayDeclaration: function () {
     var elementFns = [];
     var allConstant = true;
@@ -12934,7 +12934,7 @@ function $SceDelegateProvider() {
  *
  * @example
 <example module="mySceApp" deps="angular-sanitize.js">
-<file name="index.html">
+<file name="index-old.html">
   <div ng-controller="myAppController as myCtrl">
     <i ng-bind-html="myCtrl.explicitlyTrustedHtml" id="explicitlyTrustedHtml"></i><br><br>
     <b>User comments</b><br>
@@ -12956,7 +12956,7 @@ function $SceDelegateProvider() {
 
   mySceApp.controller("myAppController", function myAppController($http, $templateCache, $sce) {
     var self = this;
-    $http.get("test_data.json", {cache: $templateCache}).success(function(userComments) {
+    $http.get("test_data.resources", {cache: $templateCache}).success(function(userComments) {
       self.userComments = userComments;
     });
     self.explicitlyTrustedHtml = $sce.trustAsHtml(
@@ -12965,7 +12965,7 @@ function $SceDelegateProvider() {
   });
 </file>
 
-<file name="test_data.json">
+<file name="test_data.resources">
 [
   { "name": "Alice",
     "htmlComment":
@@ -14506,7 +14506,7 @@ function dateFilter($locale) {
 
 /**
  * @ngdoc filter
- * @name ng.filter:json
+ * @name ng.filter:resources
  * @function
  *
  * @description
@@ -14522,7 +14522,7 @@ function dateFilter($locale) {
  * @example:
    <doc:example>
      <doc:source>
-       <pre>{{ {'name':'value'} | json }}</pre>
+       <pre>{{ {'name':'value'} | resources }}</pre>
      </doc:source>
      <doc:scenario>
        it('should jsonify filtered objects', function() {
@@ -15930,7 +15930,7 @@ var inputType = {
            <input type="radio" ng-model="color" value="red">  Red <br/>
            <input type="radio" ng-model="color" ng-value="specialValue"> Green <br/>
            <input type="radio" ng-model="color" value="blue"> Blue <br/>
-           <tt>color = {{color | json}}</tt><br/>
+           <tt>color = {{color | resources}}</tt><br/>
           </form>
           Note that `ng-value="specialValue"` sets radio item's value to be the value of `$scope.specialValue`.
         </doc:source>
@@ -16499,7 +16499,7 @@ var VALID_CLASS = 'ng-valid',
           };
         });
     </file>
-    <file name="index.html">
+    <file name="index-old.html">
       <form name="myForm">
        <div contenteditable
             name="myWidget" ng-model="userContent"
@@ -17180,7 +17180,7 @@ var ngBindTemplateDirective = ['$interpolate', function($interpolate) {
    Try it here: enter text in text box and watch the greeting change.
  
    <example module="ngBindHtmlExample" deps="angular-sanitize.js">
-     <file name="index.html">
+     <file name="index-old.html">
        <div ng-controller="ngBindHtmlCtrl">
         <p ng-bind-html="myHTML"></p>
        </div>
@@ -17307,7 +17307,7 @@ function classDirective(name, selector) {
  *
  * @example Example that demonstrates basic bindings via ngClass directive.
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
        <p ng-class="{strike: deleted, bold: important, red: error}">Map Syntax Example</p>
        <input type="checkbox" ng-model="deleted"> deleted (apply "strike" class)<br>
        <input type="checkbox" ng-model="important"> important (apply "bold" class)<br>
@@ -17366,7 +17366,7 @@ function classDirective(name, selector) {
    The example below demonstrates how to perform animations using ngClass.
 
    <example animations="true">
-     <file name="index.html">
+     <file name="index-old.html">
       <input type="button" value="set" ng-click="myVar='my-class'">
       <input type="button" value="clear" ng-click="myVar=''">
       <br>
@@ -17430,7 +17430,7 @@ var ngClassDirective = classDirective('', true);
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
         <ol ng-init="names=['John', 'Mary', 'Cate', 'Suz']">
           <li ng-repeat="name in names">
            <span ng-class-odd="'odd'" ng-class-even="'even'">
@@ -17478,7 +17478,7 @@ var ngClassOddDirective = classDirective('Odd', 0);
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
         <ol ng-init="names=['John', 'Mary', 'Cate', 'Suz']">
           <li ng-repeat="name in names">
            <span ng-class-odd="'odd'" ng-class-even="'even'">
@@ -18268,7 +18268,7 @@ forEach(
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       Click me: <input type="checkbox" ng-model="checked" ng-init="checked=true" /><br/>
       Show when checked:
       <span ng-if="checked" class="animate-if">
@@ -18385,7 +18385,7 @@ var ngIfDirective = ['$animate', function($animate) {
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
      <div ng-controller="Ctrl">
        <select ng-model="template" ng-options="t.name for t in templates">
         <option value="">(blank)</option>
@@ -19006,7 +19006,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', function($locale, $interp
  * This example initializes the scope to a list of names and
  * then uses `ngRepeat` to display every person:
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       <div ng-init="friends = [
         {name:'John', age:25, gender:'boy'},
         {name:'Jessie', age:30, gender:'girl'},
@@ -19373,7 +19373,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       Click me: <input type="checkbox" ng-model="checked"><br/>
       <div>
         Show:
@@ -19527,7 +19527,7 @@ var ngShowDirective = ['$animate', function($animate) {
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       Click me: <input type="checkbox" ng-model="checked"><br/>
       <div>
         Show:
@@ -19606,7 +19606,7 @@ var ngHideDirective = ['$animate', function($animate) {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
         <input type="button" value="set" ng-click="myStyle={color:'red'}">
         <input type="button" value="clear" ng-click="myStyle={}">
         <br/>
@@ -19692,7 +19692,7 @@ var ngStyleDirective = ngDirective(function(scope, element, attr) {
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       <div ng-controller="Ctrl">
         <select ng-model="selection" ng-options="item for item in items">
         </select>

@@ -562,7 +562,7 @@ jQuery.extend({
 
 			if ( data ) {
 				// Make sure the incoming data is actual JSON
-				// Logic borrowed from http://json.org/json2.js
+				// Logic borrowed from http://resources.org/json2.js
 				if ( rvalidchars.test( data.replace( rvalidescape, "@" )
 					.replace( rvalidtokens, "]" )
 					.replace( rvalidbraces, "")) ) {
@@ -7813,7 +7813,7 @@ jQuery.extend({
 			text: "text/plain",
 			html: "text/html",
 			xml: "application/xml, text/xml",
-			json: "application/json, text/javascript"
+			json: "application/resources, text/javascript"
 		},
 
 		contents: {
@@ -7838,7 +7838,7 @@ jQuery.extend({
 			// Text to html (true = no transformation)
 			"text html": true,
 
-			// Evaluate text as a json expression
+			// Evaluate text as a resources expression
 			"text json": jQuery.parseJSON,
 
 			// Parse text as xml
@@ -8539,7 +8539,7 @@ jQuery.ajaxSetup({
 });
 
 // Detect, normalize options and install callbacks for jsonp requests
-jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
+jQuery.ajaxPrefilter( "resources jsonp", function( s, originalSettings, jqXHR ) {
 
 	var callbackName, overwritten, responseContainer,
 		jsonProp = s.jsonp !== false && ( rjsonp.test( s.url ) ?
@@ -8562,15 +8562,15 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 			s.url += ( ajax_rquery.test( s.url ) ? "&" : "?" ) + s.jsonp + "=" + callbackName;
 		}
 
-		// Use data converter to retrieve json after script execution
-		s.converters["script json"] = function() {
+		// Use data converter to retrieve resources after script execution
+		s.converters["script resources"] = function() {
 			if ( !responseContainer ) {
 				jQuery.error( callbackName + " was not called" );
 			}
 			return responseContainer[ 0 ];
 		};
 
-		// force json dataType
+		// force resources dataType
 		s.dataTypes[ 0 ] = "json";
 
 		// Install callback
@@ -10569,8 +10569,8 @@ function isLeafNode (node) {
  <button ng-click="reset()">RESET</button>
  <button ng-click="update(user)">SAVE</button>
  </form>
- <pre>form = {{user | json}}</pre>
- <pre>master = {{master | json}}</pre>
+ <pre>form = {{user | resources}}</pre>
+ <pre>master = {{master | resources}}</pre>
  </div>
 
  <script>
@@ -10999,7 +10999,7 @@ function encodeUriQuery(val, pctEncodeSpaces) {
  * `ngApp` is the easiest, and most common, way to bootstrap an application.
  *
  <example module="ngAppDemo">
-   <file name="index.html">
+   <file name="index-old.html">
    <div ng-controller="ngAppDemoController">
      I can add: {{a}} + {{b}} =  {{ a+b }}
    </file>
@@ -13542,7 +13542,7 @@ function createInjector(modulesToLoad) {
  * 
  * @example
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
        <div id="scrollArea" ng-controller="ScrollCtrl">
          <a ng-click="gotoBottom()">Go to bottom</a>
          <a id="bottom"></a> You're at the bottom!
@@ -16717,13 +16717,13 @@ function $HttpProvider() {
   var JSON_START = /^\s*(\[|\{[^\{])/,
       JSON_END = /[\}\]]\s*$/,
       PROTECTION_PREFIX = /^\)\]\}',?\n/,
-      CONTENT_TYPE_APPLICATION_JSON = {'Content-Type': 'application/json;charset=utf-8'};
+      CONTENT_TYPE_APPLICATION_JSON = {'Content-Type': 'application/resources;charset=utf-8'};
 
   var defaults = this.defaults = {
     // transform incoming response data
     transformResponse: [function(data) {
       if (isString(data)) {
-        // strip json vulnerability protection prefix
+        // strip resources vulnerability protection prefix
         data = data.replace(PROTECTION_PREFIX, '');
         if (JSON_START.test(data) && JSON_END.test(data))
           data = fromJson(data);
@@ -16739,7 +16739,7 @@ function $HttpProvider() {
     // default headers
     headers: {
       common: {
-        'Accept': 'application/json, text/plain, */*'
+        'Accept': 'application/resources, text/plain, */*'
       },
       post:   copy(CONTENT_TYPE_APPLICATION_JSON),
       put:    copy(CONTENT_TYPE_APPLICATION_JSON),
@@ -16892,11 +16892,11 @@ function $HttpProvider() {
      * object, which currently contains this default configuration:
      *
      * - `$httpProvider.defaults.headers.common` (headers that are common for all requests):
-     *   - `Accept: application/json, text/plain, * / *`
+     *   - `Accept: application/resources, text/plain, * / *`
      * - `$httpProvider.defaults.headers.post`: (header defaults for POST requests)
-     *   - `Content-Type: application/json`
+     *   - `Content-Type: application/resources`
      * - `$httpProvider.defaults.headers.put` (header defaults for PUT requests)
-     *   - `Content-Type: application/json`
+     *   - `Content-Type: application/resources`
      *
      * To add or overwrite these defaults, simply add or remove a property from these configuration
      * objects. To add headers for an HTTP method other than POST or PUT, simply add a new object
@@ -17102,7 +17102,7 @@ function $HttpProvider() {
      *
      * When designing web applications, consider security threats from:
      *
-     * - {@link http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx
+     * - {@link http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-resources-vulnerability.aspx
      *   JSON vulnerability}
      * - {@link http://en.wikipedia.org/wiki/Cross-site_request_forgery XSRF}
      *
@@ -17112,7 +17112,7 @@ function $HttpProvider() {
      *
      * ## JSON Vulnerability Protection
      *
-     * A {@link http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx
+     * A {@link http://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-resources-vulnerability.aspx
      * JSON vulnerability} allows third party website to turn your JSON resource URL into
      * {@link http://en.wikipedia.org/wiki/JSONP JSONP} request under some conditions. To
      * counter this your server can prefix all JSON requests with following string `")]}',\n"`.
@@ -17210,7 +17210,7 @@ function $HttpProvider() {
      *
      * @example
 <example>
-<file name="index.html">
+<file name="index-old.html">
   <div ng-controller="FetchCtrl">
     <select ng-model="method">
       <option>GET</option>
@@ -19057,7 +19057,7 @@ function $LocationProvider(){
          $scope.message = 'Hello World!';
        }
      </file>
-     <file name="index.html">
+     <file name="index-old.html">
        <div ng-controller="LogCtrl">
          <p>Reload this page with open console, enter text and hit the log button...</p>
          Message:
@@ -19603,7 +19603,7 @@ Parser.prototype = {
   parse: function (text, json) {
     this.text = text;
 
-    //TODO(i): strip all the obsolte json stuff from this file
+    //TODO(i): strip all the obsolte resources stuff from this file
     this.json = json;
 
     this.tokens = this.lexer.lex(text);
@@ -19617,7 +19617,7 @@ Parser.prototype = {
       this.fieldAccess =
       this.objectIndex =
       this.filterChain = function() {
-        this.throwError('is not valid json', {text: text, index: 0});
+        this.throwError('is not valid resources', {text: text, index: 0});
       };
     }
 
@@ -19700,7 +19700,7 @@ Parser.prototype = {
     var token = this.peek(e1, e2, e3, e4);
     if (token) {
       if (this.json && !token.json) {
-        this.throwError('is not valid json', token);
+        this.throwError('is not valid resources', token);
       }
       this.tokens.shift();
       return token;
@@ -19981,7 +19981,7 @@ Parser.prototype = {
     };
   },
 
-  // This is used with json array declaration
+  // This is used with resources array declaration
   arrayDeclaration: function () {
     var elementFns = [];
     var allConstant = true;
@@ -22726,7 +22726,7 @@ function $SceDelegateProvider() {
  *
  * @example
 <example module="mySceApp" deps="angular-sanitize.js">
-<file name="index.html">
+<file name="index-old.html">
   <div ng-controller="myAppController as myCtrl">
     <i ng-bind-html="myCtrl.explicitlyTrustedHtml" id="explicitlyTrustedHtml"></i><br><br>
     <b>User comments</b><br>
@@ -22748,7 +22748,7 @@ function $SceDelegateProvider() {
 
   mySceApp.controller("myAppController", function myAppController($http, $templateCache, $sce) {
     var self = this;
-    $http.get("test_data.json", {cache: $templateCache}).success(function(userComments) {
+    $http.get("test_data.resources", {cache: $templateCache}).success(function(userComments) {
       self.userComments = userComments;
     });
     self.explicitlyTrustedHtml = $sce.trustAsHtml(
@@ -22757,7 +22757,7 @@ function $SceDelegateProvider() {
   });
 </file>
 
-<file name="test_data.json">
+<file name="test_data.resources">
 [
   { "name": "Alice",
     "htmlComment":
@@ -24298,7 +24298,7 @@ function dateFilter($locale) {
 
 /**
  * @ngdoc filter
- * @name ng.filter:json
+ * @name ng.filter:resources
  * @function
  *
  * @description
@@ -24314,7 +24314,7 @@ function dateFilter($locale) {
  * @example:
    <doc:example>
      <doc:source>
-       <pre>{{ {'name':'value'} | json }}</pre>
+       <pre>{{ {'name':'value'} | resources }}</pre>
      </doc:source>
      <doc:scenario>
        it('should jsonify filtered objects', function() {
@@ -25722,7 +25722,7 @@ var inputType = {
            <input type="radio" ng-model="color" value="red">  Red <br/>
            <input type="radio" ng-model="color" ng-value="specialValue"> Green <br/>
            <input type="radio" ng-model="color" value="blue"> Blue <br/>
-           <tt>color = {{color | json}}</tt><br/>
+           <tt>color = {{color | resources}}</tt><br/>
           </form>
           Note that `ng-value="specialValue"` sets radio item's value to be the value of `$scope.specialValue`.
         </doc:source>
@@ -26291,7 +26291,7 @@ var VALID_CLASS = 'ng-valid',
           };
         });
     </file>
-    <file name="index.html">
+    <file name="index-old.html">
       <form name="myForm">
        <div contenteditable
             name="myWidget" ng-model="userContent"
@@ -26972,7 +26972,7 @@ var ngBindTemplateDirective = ['$interpolate', function($interpolate) {
    Try it here: enter text in text box and watch the greeting change.
  
    <example module="ngBindHtmlExample" deps="angular-sanitize.js">
-     <file name="index.html">
+     <file name="index-old.html">
        <div ng-controller="ngBindHtmlCtrl">
         <p ng-bind-html="myHTML"></p>
        </div>
@@ -27099,7 +27099,7 @@ function classDirective(name, selector) {
  *
  * @example Example that demonstrates basic bindings via ngClass directive.
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
        <p ng-class="{strike: deleted, bold: important, red: error}">Map Syntax Example</p>
        <input type="checkbox" ng-model="deleted"> deleted (apply "strike" class)<br>
        <input type="checkbox" ng-model="important"> important (apply "bold" class)<br>
@@ -27158,7 +27158,7 @@ function classDirective(name, selector) {
    The example below demonstrates how to perform animations using ngClass.
 
    <example animations="true">
-     <file name="index.html">
+     <file name="index-old.html">
       <input type="button" value="set" ng-click="myVar='my-class'">
       <input type="button" value="clear" ng-click="myVar=''">
       <br>
@@ -27222,7 +27222,7 @@ var ngClassDirective = classDirective('', true);
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
         <ol ng-init="names=['John', 'Mary', 'Cate', 'Suz']">
           <li ng-repeat="name in names">
            <span ng-class-odd="'odd'" ng-class-even="'even'">
@@ -27270,7 +27270,7 @@ var ngClassOddDirective = classDirective('Odd', 0);
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
         <ol ng-init="names=['John', 'Mary', 'Cate', 'Suz']">
           <li ng-repeat="name in names">
            <span ng-class-odd="'odd'" ng-class-even="'even'">
@@ -28060,7 +28060,7 @@ forEach(
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       Click me: <input type="checkbox" ng-model="checked" ng-init="checked=true" /><br/>
       Show when checked:
       <span ng-if="checked" class="animate-if">
@@ -28177,7 +28177,7 @@ var ngIfDirective = ['$animate', function($animate) {
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
      <div ng-controller="Ctrl">
        <select ng-model="template" ng-options="t.name for t in templates">
         <option value="">(blank)</option>
@@ -28798,7 +28798,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', function($locale, $interp
  * This example initializes the scope to a list of names and
  * then uses `ngRepeat` to display every person:
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       <div ng-init="friends = [
         {name:'John', age:25, gender:'boy'},
         {name:'Jessie', age:30, gender:'girl'},
@@ -29165,7 +29165,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       Click me: <input type="checkbox" ng-model="checked"><br/>
       <div>
         Show:
@@ -29319,7 +29319,7 @@ var ngShowDirective = ['$animate', function($animate) {
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       Click me: <input type="checkbox" ng-model="checked"><br/>
       <div>
         Show:
@@ -29398,7 +29398,7 @@ var ngHideDirective = ['$animate', function($animate) {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index-old.html">
         <input type="button" value="set" ng-click="myStyle={color:'red'}">
         <input type="button" value="clear" ng-click="myStyle={}">
         <br/>
@@ -29484,7 +29484,7 @@ var ngStyleDirective = ngDirective(function(scope, element, attr) {
  *
  * @example
   <example animations="true">
-    <file name="index.html">
+    <file name="index-old.html">
       <div ng-controller="Ctrl">
         <select ng-model="selection" ng-options="item for item in items">
         </select>
@@ -32597,4 +32597,4 @@ if (config.autotest) {
 
 
 !angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";\n\n[ng\\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak],\n.ng-cloak, .x-ng-cloak,\n.ng-hide {\n  display: none !important;\n}\n\nng\\:form {\n  display: block;\n}\n</style>');
-!angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";\n/* CSS Document */\n\n/** Structure */\nbody {\n  font-family: Arial, sans-serif;\n  margin: 0;\n  font-size: 14px;\n}\n\n#system-error {\n  font-size: 1.5em;\n  text-align: center;\n}\n\n#json, #xml {\n  display: none;\n}\n\n#header {\n  position: fixed;\n  width: 100%;\n}\n\n#specs {\n  padding-top: 50px;\n}\n\n#header .angular {\n  font-family: Courier New, monospace;\n  font-weight: bold;\n}\n\n#header h1 {\n  font-weight: normal;\n  float: left;\n  font-size: 30px;\n  line-height: 30px;\n  margin: 0;\n  padding: 10px 10px;\n  height: 30px;\n}\n\n#application h2,\n#specs h2 {\n  margin: 0;\n  padding: 0.5em;\n  font-size: 1.1em;\n}\n\n#status-legend {\n  margin-top: 10px;\n  margin-right: 10px;\n}\n\n#header,\n#application,\n.test-info,\n.test-actions li {\n  overflow: hidden;\n}\n\n#application {\n  margin: 10px;\n}\n\n#application iframe {\n  width: 100%;\n  height: 758px;\n}\n\n#application .popout {\n  float: right;\n}\n\n#application iframe {\n  border: none;\n}\n\n.tests li,\n.test-actions li,\n.test-it li,\n.test-it ol,\n.status-display {\n  list-style-type: none;\n}\n\n.tests,\n.test-it ol,\n.status-display {\n  margin: 0;\n  padding: 0;\n}\n\n.test-info {\n  margin-left: 1em;\n  margin-top: 0.5em;\n  border-radius: 8px 0 0 8px;\n  -webkit-border-radius: 8px 0 0 8px;\n  -moz-border-radius: 8px 0 0 8px;\n  cursor: pointer;\n}\n\n.test-info:hover .test-name {\n  text-decoration: underline;\n}\n\n.test-info .closed:before {\n  content: \'\\25b8\\00A0\';\n}\n\n.test-info .open:before {\n  content: \'\\25be\\00A0\';\n  font-weight: bold;\n}\n\n.test-it ol {\n  margin-left: 2.5em;\n}\n\n.status-display,\n.status-display li {\n  float: right;\n}\n\n.status-display li {\n  padding: 5px 10px;\n}\n\n.timer-result,\n.test-title {\n  display: inline-block;\n  margin: 0;\n  padding: 4px;\n}\n\n.test-actions .test-title,\n.test-actions .test-result {\n  display: table-cell;\n  padding-left: 0.5em;\n  padding-right: 0.5em;\n}\n\n.test-actions {\n  display: table;\n}\n\n.test-actions li {\n  display: table-row;\n}\n\n.timer-result {\n  width: 4em;\n  padding: 0 10px;\n  text-align: right;\n  font-family: monospace;\n}\n\n.test-it pre,\n.test-actions pre {\n  clear: left;\n  color: black;\n  margin-left: 6em;\n}\n\n.test-describe {\n  padding-bottom: 0.5em;\n}\n\n.test-describe .test-describe {\n  margin: 5px 5px 10px 2em;\n}\n\n.test-actions .status-pending .test-title:before {\n  content: \'\\00bb\\00A0\';\n}\n\n.scrollpane {\n   max-height: 20em;\n   overflow: auto;\n}\n\n/** Colors */\n\n#header {\n  background-color: #F2C200;\n}\n\n#specs h2 {\n  border-top: 2px solid #BABAD1;\n}\n\n#specs h2,\n#application h2 {\n  background-color: #efefef;\n}\n\n#application {\n  border: 1px solid #BABAD1;\n}\n\n.test-describe .test-describe {\n  border-left: 1px solid #BABAD1;\n  border-right: 1px solid #BABAD1;\n  border-bottom: 1px solid #BABAD1;\n}\n\n.status-display {\n  border: 1px solid #777;\n}\n\n.status-display .status-pending,\n.status-pending .test-info {\n  background-color: #F9EEBC;\n}\n\n.status-display .status-success,\n.status-success .test-info {\n  background-color: #B1D7A1;\n}\n\n.status-display .status-failure,\n.status-failure .test-info {\n  background-color: #FF8286;\n}\n\n.status-display .status-error,\n.status-error .test-info {\n  background-color: black;\n  color: white;\n}\n\n.test-actions .status-success .test-title {\n  color: #30B30A;\n}\n\n.test-actions .status-failure .test-title {\n  color: #DF0000;\n}\n\n.test-actions .status-error .test-title {\n  color: black;\n}\n\n.test-actions .timer-result {\n  color: #888;\n}\n</style>');
+!angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";\n/* CSS Document */\n\n/** Structure */\nbody {\n  font-family: Arial, sans-serif;\n  margin: 0;\n  font-size: 14px;\n}\n\n#system-error {\n  font-size: 1.5em;\n  text-align: center;\n}\n\n#resources, #xml {\n  display: none;\n}\n\n#header {\n  position: fixed;\n  width: 100%;\n}\n\n#specs {\n  padding-top: 50px;\n}\n\n#header .angular {\n  font-family: Courier New, monospace;\n  font-weight: bold;\n}\n\n#header h1 {\n  font-weight: normal;\n  float: left;\n  font-size: 30px;\n  line-height: 30px;\n  margin: 0;\n  padding: 10px 10px;\n  height: 30px;\n}\n\n#application h2,\n#specs h2 {\n  margin: 0;\n  padding: 0.5em;\n  font-size: 1.1em;\n}\n\n#status-legend {\n  margin-top: 10px;\n  margin-right: 10px;\n}\n\n#header,\n#application,\n.test-info,\n.test-actions li {\n  overflow: hidden;\n}\n\n#application {\n  margin: 10px;\n}\n\n#application iframe {\n  width: 100%;\n  height: 758px;\n}\n\n#application .popout {\n  float: right;\n}\n\n#application iframe {\n  border: none;\n}\n\n.tests li,\n.test-actions li,\n.test-it li,\n.test-it ol,\n.status-display {\n  list-style-type: none;\n}\n\n.tests,\n.test-it ol,\n.status-display {\n  margin: 0;\n  padding: 0;\n}\n\n.test-info {\n  margin-left: 1em;\n  margin-top: 0.5em;\n  border-radius: 8px 0 0 8px;\n  -webkit-border-radius: 8px 0 0 8px;\n  -moz-border-radius: 8px 0 0 8px;\n  cursor: pointer;\n}\n\n.test-info:hover .test-name {\n  text-decoration: underline;\n}\n\n.test-info .closed:before {\n  content: \'\\25b8\\00A0\';\n}\n\n.test-info .open:before {\n  content: \'\\25be\\00A0\';\n  font-weight: bold;\n}\n\n.test-it ol {\n  margin-left: 2.5em;\n}\n\n.status-display,\n.status-display li {\n  float: right;\n}\n\n.status-display li {\n  padding: 5px 10px;\n}\n\n.timer-result,\n.test-title {\n  display: inline-block;\n  margin: 0;\n  padding: 4px;\n}\n\n.test-actions .test-title,\n.test-actions .test-result {\n  display: table-cell;\n  padding-left: 0.5em;\n  padding-right: 0.5em;\n}\n\n.test-actions {\n  display: table;\n}\n\n.test-actions li {\n  display: table-row;\n}\n\n.timer-result {\n  width: 4em;\n  padding: 0 10px;\n  text-align: right;\n  font-family: monospace;\n}\n\n.test-it pre,\n.test-actions pre {\n  clear: left;\n  color: black;\n  margin-left: 6em;\n}\n\n.test-describe {\n  padding-bottom: 0.5em;\n}\n\n.test-describe .test-describe {\n  margin: 5px 5px 10px 2em;\n}\n\n.test-actions .status-pending .test-title:before {\n  content: \'\\00bb\\00A0\';\n}\n\n.scrollpane {\n   max-height: 20em;\n   overflow: auto;\n}\n\n/** Colors */\n\n#header {\n  background-color: #F2C200;\n}\n\n#specs h2 {\n  border-top: 2px solid #BABAD1;\n}\n\n#specs h2,\n#application h2 {\n  background-color: #efefef;\n}\n\n#application {\n  border: 1px solid #BABAD1;\n}\n\n.test-describe .test-describe {\n  border-left: 1px solid #BABAD1;\n  border-right: 1px solid #BABAD1;\n  border-bottom: 1px solid #BABAD1;\n}\n\n.status-display {\n  border: 1px solid #777;\n}\n\n.status-display .status-pending,\n.status-pending .test-info {\n  background-color: #F9EEBC;\n}\n\n.status-display .status-success,\n.status-success .test-info {\n  background-color: #B1D7A1;\n}\n\n.status-display .status-failure,\n.status-failure .test-info {\n  background-color: #FF8286;\n}\n\n.status-display .status-error,\n.status-error .test-info {\n  background-color: black;\n  color: white;\n}\n\n.test-actions .status-success .test-title {\n  color: #30B30A;\n}\n\n.test-actions .status-failure .test-title {\n  color: #DF0000;\n}\n\n.test-actions .status-error .test-title {\n  color: black;\n}\n\n.test-actions .timer-result {\n  color: #888;\n}\n</style>');
